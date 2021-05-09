@@ -1,0 +1,18 @@
+.input {
+  background-color: transparent;
+  border-radius: 0.7rem;
+  height: 4rem;
+  padding: 0 0.8rem;
+  border: 1px solid $color-black;
+  font-size: 1.6rem;
+  font-family: inherit;
+  outline: none;
+
+  &:focus {
+    border-color: $color-primary;
+  }
+
+  &--error {
+    border-color: $color-fail;
+  }
+}

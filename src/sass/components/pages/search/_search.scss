@@ -1,0 +1,28 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  transform: translateY(-75%);
+
+  &__heading {
+    margin: 0 auto 2rem;
+  }
+
+  &__input {
+    width: 40rem;
+  }
+
+  &__text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $color-gray-dark-1;
+  }
+
+  &__flag {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

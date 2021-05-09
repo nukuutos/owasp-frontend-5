@@ -1,0 +1,93 @@
+.btn {
+  &,
+  &:link,
+  &:visited {
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    backface-visibility: hidden;
+    cursor: pointer;
+    border: none;
+    border-color: transparent;
+    outline: none;
+    background-color: transparent;
+    letter-spacing: 0.1px;
+    padding: 1.2rem 2.4rem;
+    border-radius: 0.3rem;
+    font-size: 1.6rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s background, 0.2s color;
+  }
+
+  &--primary {
+    color: $color-white;
+    background: $color-secondary;
+  }
+
+  &--secondary {
+    background: $color-white;
+
+    border: 1px solid $color-primary;
+    color: $color-primary;
+    transition: 0.2s color, 0.2s background;
+
+    &:hover {
+      background: $color-primary;
+      color: $color-white !important;
+    }
+  }
+
+  &--fail {
+    @include color-btn($color-fail);
+  }
+
+  &--success {
+    @include color-btn($color-success);
+  }
+
+  &--gray {
+    @include color-btn($color-gray);
+  }
+
+  &--flat {
+    padding: 0.8rem 2.4rem;
+  }
+
+  &--spinner {
+    &::after {
+      position: absolute;
+      top: -36%;
+      right: -12%;
+      display: block;
+      content: '';
+      border: 3px solid $color-primary;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+      background-image: none;
+      font-size: 0;
+      width: 1.2rem;
+      height: 1.2rem;
+      padding: 0;
+      border-radius: 50%;
+      -webkit-appearance: none;
+      animation: spin 1s linear infinite;
+      cursor: default;
+    }
+  }
+
+  // opacity in this case effect every child(after, befor, text)
+  &--disabled {
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  //rgba(opacity) in this case effect only $color-primary background
+  &--submitted {
+    background-color: rgba($color-primary, 0.8);
+    pointer-events: none;
+  }
+}

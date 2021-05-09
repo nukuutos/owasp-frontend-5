@@ -1,0 +1,18 @@
+.flag {
+  &__banner {
+    fill: $color-success;
+    animation: 1s flagAnimation infinite;
+  }
+}
+
+@keyframes flagAnimation {
+  0% {
+    fill: $color-success;
+  }
+  50% {
+    fill: $color-success-light;
+  }
+  100% {
+    fill: $color-success;
+  }
+}

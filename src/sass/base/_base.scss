@@ -1,0 +1,42 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; // 1rem = 10px
+
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  position: relative;
+  box-sizing: border-box;
+  background: $color-gray-light-3;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.1px;
+  text-rendering: optimizeLegibility;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+}
