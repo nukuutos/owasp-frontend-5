@@ -5,10 +5,10 @@ const useAsyncAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const isCancelled = useRef(false);
 
-  const asyncAction = async (config, setAlerts) => {
+  const asyncAction = async (config, setAlerts, setToken = null) => {
     setIsLoading(true);
 
-    const data = await asyncCall(config, setAlerts);
+    const data = await asyncCall(config, setAlerts, setToken);
 
     if (!isCancelled.current) setIsLoading(false);
 

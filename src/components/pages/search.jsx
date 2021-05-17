@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Cookie from 'js-cookie';
 import useAsyncAction from '../../hooks/use-async-action/use-async-action';
 import { Formik, Form } from 'formik';
 import Input from '../utils/form/input';
 import Flag from './flag';
 import { Link } from 'react-router-dom';
 
-const Search = ({ accessToken = null, username = 'supeerpuperadmin' }) => {
+const Search = ({ token, setToken, setAlerts }) => {
   const [asyncAction] = useAsyncAction();
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const config = {
+        method: 'post',
+        url: `/auth/check`,
+        accessToken: Cookie.get('accessToken') || null,
+      };
+
+      const data = await asyncAction(config, setAlerts);
+      if (data) setToken(Cookie.get('accessToken'));
+    };
+
+    if (Cookie.get('accessToken')) checkToken();
+  }, []);
 
   return (
     <>
       <Formik
-        // enableReinitialize
         initialValues={{ search: '' }}
         onSubmit={async (values) => {
           const { search } = values;
@@ -19,30 +34,23 @@ const Search = ({ accessToken = null, username = 'supeerpuperadmin' }) => {
           const config = {
             method: 'get',
             url: `/file?filename=${search}`,
-            accessToken: 'something',
+            accessToken: Cookie.get('accessToken') || null,
           };
 
-          const data = await asyncAction(config);
+          const data = await asyncAction(config, setAlerts, setToken);
 
-          // if (data) setData(data.masters);
+          if (data && data.message) setAlerts((alerts) => [...alerts, { message: data.message, status: 200 }]);
+          if (data && data.message && !token) setToken(Cookie.get('accessToken'));
         }}>
-        {({ submitForm, handleChange }) => (
+        {({ isSubmitting }) => (
           <Form className="search">
             <div className="heading search__heading">File System</div>
 
             <div className="label mb-s-1">Search file</div>
-            <Input
-              onChange={(e) => {
-                handleChange(e);
-                submitForm();
-              }}
-              type="text"
-              className="input search__input"
-              name="search"
-            />
+            <Input type="text" className="input search__input" name="search" />
             <p className="search__text mt-s-1">
-              {accessToken ? (
-                <>You are authorized successfully, {username}</>
+              {token ? (
+                <>You are authorized successfully</>
               ) : (
                 <>
                   <Link to="/sign-in">
@@ -52,10 +60,18 @@ const Search = ({ accessToken = null, username = 'supeerpuperadmin' }) => {
                 </>
               )}
             </p>
+
+            <button
+              type="submit"
+              className={`search__submit btn btn--flat btn--primary ${
+                isSubmitting ? 'btn--submitted btn--spinner' : ''
+              } mt-s-2`}>
+              search
+            </button>
           </Form>
         )}
       </Formik>
-      {accessToken && <Flag className="search__flag" />}
+      {token && <Flag className="search__flag" />}
     </>
   );
 };

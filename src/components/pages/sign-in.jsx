@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Input from '../utils/form/input';
 import { Formik, Form } from 'formik';
 import useAsyncAction from '../../hooks/use-async-action/use-async-action';
 import { Link } from 'react-router-dom';
+import Cookie from 'js-cookie';
 
-const SignIn = ({ setAlerts, setAccessToken }) => {
+const SignIn = ({ setAlerts, setToken }) => {
   const [asyncAction] = useAsyncAction();
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const config = {
+        method: 'post',
+        url: `/auth/check`,
+        accessToken: Cookie.get('accessToken') || null,
+      };
+
+      const data = await asyncAction(config, setAlerts);
+      if (data) setToken(Cookie.get('accessToken'));
+    };
+
+    if (Cookie.get('accessToken')) checkToken();
+  }, []);
 
   return (
     <Formik
-      initialValues={{ username: 'formik', password: '' }}
+      initialValues={{ username: '', password: '' }}
       onSubmit={async (values) => {
         // async
         const config = {
@@ -18,7 +34,7 @@ const SignIn = ({ setAlerts, setAccessToken }) => {
           data: { ...values },
         };
 
-        const data = await asyncAction(config, setAlerts);
+        await asyncAction(config, setAlerts);
 
         console.log('good luck :))');
       }}>
